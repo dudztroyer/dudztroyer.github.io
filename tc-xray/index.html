@@ -16,6 +16,23 @@
 			<div class="col-lg-12 mx-auto">
 				<div class="card mt-2 mx-auto bg-light">
 					<div class="card-header">
+						Informações
+					</div>
+					<div class="card-body bg-light"> 
+						<div class="container">
+							<div class="row">
+							Esta demonstração foi desenvolvida pelo aluno Eduardo A. Roeder com o objetivo de demonstrar a usabilidade de seu Trabalho de Curso na graduação de Medicina da UFPR. 
+							<span id="txtinfo">
+								<br><br>Para iniciar a demonstração, clique no botão abaixo.</span>
+							</div>
+							<div class="row">
+								<div class="col-md-12"> <input type="submit" class="btn btn-success btn-send pt-2 btn-block " value="Iniciar" onclick="$('#main-card').slideDown();$(this).slideUp();$('#txtinfo').slideUp()"> </div>
+							</div>
+						</div>
+					</div>
+				</div> <!-- /.8 -->
+				<div class="card mt-2 mx-auto bg-light" id="main-card"  style="display:none">
+					<div class="card-header">
 						Selecionar Modelo
 					</div>
 					<div class="card-body bg-light">
@@ -42,7 +59,7 @@
 											<label class="form-check-label" for="inlineRadio2">Selecionar de uma lista</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"  value="upload" onclick="changeInput()">
+									</button>		<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"  value="upload" onclick="changeInput()">
 											<label class="form-check-label" for="inlineRadio1">Fazer Upload</label>
 										  </div>
 									</div>
@@ -123,7 +140,7 @@
 	$(document).ready(function() { 
 		LoadModelList(); 
 		changeInput()
-		SetupWorker();
+		// SetupWorker();
 		
 		//ShowMessage("Por fim, prediza a imagem.")
 		//ShowMessage("Em seguida, selecione uma imagem para predizer.")
