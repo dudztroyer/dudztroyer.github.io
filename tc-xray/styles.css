@@ -30,3 +30,8 @@ body {
     padding: 30px;
     text-align: center;
   }
+  .btn-success.disabled, .btn-success:disabled {
+    color: #fff;
+    background-color: #00000096 !important;
+    border-color: #000000b3 !important;
+  }
