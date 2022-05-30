@@ -1,4 +1,4 @@
 # https://github.com/dudztroyer/dudztroyer.github.io
 
 User-agent: *
-Disallow: /
+Disallow: 
