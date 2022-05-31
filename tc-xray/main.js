@@ -1,3 +1,4 @@
+var live = true;
 
 
 function ApplyGradCam(tmpLastPrediction = 1){
@@ -144,7 +145,6 @@ function LoadModelList(){
 
 var selectedModel = null;
 var predictWorker = null
-var live = false;
 var lastPrediction = null
 var lastImage = null
 var lastGradCam = null
