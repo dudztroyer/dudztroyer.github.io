@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <title>Interpretador de Raio X</title>
@@ -38,7 +38,7 @@
 								<br><br>Para iniciar a demonstração, clique no botão abaixo.</div>
 							</div>
 							<div class="row">
-								<div class="col-md-12"> <input type="submit" class="btn btn-success btn-send pt-2 btn-block " value="Iniciar" onclick="$('#main-card').slideDown();$(this).slideUp();$('#txtinfo').slideUp()"> </div>
+								<div class="col-md-12"> <input id="notice-button" type="submit" class="btn btn-success btn-send pt-2 btn-block " value="Iniciar" onclick="$('#main-card').slideDown();$(this).slideUp();$('#txtinfo').slideUp()"> </div>
 							</div>
 						</div>
 					</div>
@@ -109,10 +109,27 @@
 						</div>
 					</div>
 				</div> <!-- /.8 -->
-				<div class="card mt-2 mx-auto p-4 bg-light mb-5 " id="prediction" style="display:none">
+				<div class="card mt-2 mx-auto p-4 bg-light mb-5 " id="prediction" style="display:none" >
 					<div class="card-body bg-light"> 
 						<div class="container">
-							
+							<div class="row">
+								<div id="prediction_text" class="col-12 col-md-6 text-center my-auto ">
+								</div>
+								<div class="col-12 col-md-6"> <input id="notice-button" type="submit" class="btn btn-success btn-send pt-2 btn-block " value="Gerar mapa de calor" onclick="ApplyGradCam();"> </div>
+							</div>
+							<div id="gradcam" class="row mt-4">
+								<div class="col-md-6 col-12 mb-2">
+									<div class="row">
+										<canvas id="gradCamCanvas" style="margin: auto;height:300px; width:300px;"></canvas>
+									</div>
+								</div>
+								<div class="col-md-6 col-12 mb-2">
+									<div class="row mx-auto" style="margin: auto;">
+											<img id="gradCamImg" style="left: calc(50% - 150px);position:absolute; margin: auto;height:300px; width:300px;" id="grad_cam_img"/>
+											<canvas id="gradCamCanvasOverlay" style="left: calc(50% - 150px);opacity: 0.5;position:absolute; margin: auto;height:300px; width:300px;"></canvas>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div> <!-- /.8 -->
@@ -120,14 +137,13 @@
 		</div>
 	</div>
 
-<div id="paint" style="display:none">
-	<canvas id="myCanvas" ></canvas>
-</div>
     <script>
 	var input_img = $("#preview_image");
+	var gradCamImg = $("#gradCamImg")
 	var predictiondiv = $("#prediction");
-	var canvas = document.getElementById('myCanvas');
-	var context = canvas.getContext('2d');
+	var gradCamdiv = $("#gradcam");
+	var gradCamCanvas = document.getElementById('gradCamCanvas');
+	var gradCamCanvasOverlay = document.getElementById('gradCamCanvasOverlay');
 	var mdlSelect = $("#form_modelo");
 	var selectImage = $("#form_select_image")
 	var changeInputField = $('input[name="inlineRadioOptions"]')
@@ -137,31 +153,41 @@
 		const fileList = event.target.files;
 		$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 		readImageToDiv(fileList[0], input_img)
+		readImageToDiv(fileList[0], gradCamImg)
+		predictiondiv.hide()
 	});
 
 	$("#form_select_image").on("change", function() {
 		var fileName = "test_images/" + test_images[$(this).val()]['target'];
     	EnableDisableStuff(true)
+		gradCamImg[0].src = fileName;
 		input_img[0].src = fileName;
 		input_img.css('display','block');
+		predictiondiv.hide()
     	EnableDisableStuff(false)
 	});
 
 
 
 	$(document).ready(function() { 
+		
+		if (!live){
+			$('#main-card').slideDown();$("#notice-button").slideUp();$('#txtinfo').slideUp()
+			$('#prediction').slideDown()
+		}
 		LoadModelList(); 
 		changeInput()
-		SetupWorker();
+		SetupWorker();$('.loading').hide();
 		
 		//ShowMessage("Por fim, prediza a imagem.")
 		//ShowMessage("Em seguida, selecione uma imagem para predizer.")
 		//ShowMessage("Selecione um modelo para testar.")
 	});
     </script>
+	<div class="loading style-2"><div class="loading-wheel"></div></div>
   </body>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <!-- <script type="text/javascript" src="http://livejs.com/live.js"></script> -->
+  <script type="text/javascript" src="http://livejs.com/live.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.5.2/dist/tf.min.js"></script>
   <script src="./main.js"></script>
