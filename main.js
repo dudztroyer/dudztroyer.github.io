@@ -1,4 +1,4 @@
-var live = True;
+var live = true;
 
 
 function ApplyGradCam(tmpLastPrediction = 1){
